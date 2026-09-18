@@ -1,5 +1,6 @@
 import { useEffect, useState} from "react";
 import { getExpenses } from "../api/api";
+import ExpenseForm from "../components/ExpenseForm";
 
 function DashboardPage() {
     const [expenses, setExpenses] = useState([]);
@@ -21,6 +22,8 @@ function DashboardPage() {
 return (
     <div>
         <h1>Finance Dashboard</h1>
+
+        <ExpenseForm />
 
         {error && <p>{error}</p>}
         

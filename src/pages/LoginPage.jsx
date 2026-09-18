@@ -23,7 +23,7 @@ function LoginPage() {
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
 
-            navigate("/dashborad");
+            navigate("/dashboard");
         } catch (error) {
             setError(error.message);
         }
