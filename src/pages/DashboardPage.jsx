@@ -1,5 +1,5 @@
 import { useEffect, useState} from "react";
-import { getExpenses } from "../api/api";
+import { getExpenses, deleteExpense } from "../api/api";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
 
@@ -7,8 +7,8 @@ function DashboardPage() {
     const [expenses, setExpenses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [editingExpense, setEditingExpense] = useState(null);
 
-    useEffect(() => {
     const loadExpenses = async () => {
         try {
             setLoading(true);
@@ -23,14 +23,52 @@ function DashboardPage() {
         }
     };
 
-    loadExpenses();
+    useEffect(() => {
+        const fetchInitialExpenses = async () => {
+            try {
+                setError("");
+
+                const data = await getExpenses();
+                setExpenses(data);
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchInitialExpenses();
 }, []);
+
+const handleDelete = async (id) => {
+    try {
+        await deleteExpense(id);
+        await loadExpenses();
+    } catch (error) {
+        setError(error.message);
+    }
+};
+
+const handleEdit = (expense) => {
+    setEditingExpense(expense);
+}
 
 return (
     <div>
         <h1>Finance Dashboard</h1>
 
-        <ExpenseForm />
+        <ExpenseForm 
+        key={editingExpense?._id || "new-expense"}
+        onExpenseCreated={loadExpenses}
+        editingExpense={editingExpense}
+        onExpenseUpdated={() => {
+            setEditingExpense(null);
+            loadExpenses();
+        }}
+        onCancelEdit={() => 
+            setEditingExpense(null)
+        }
+        />
 
         {error && <p>{error}</p>}
         
@@ -38,10 +76,12 @@ return (
 
         {loading && <p>Loading expenses...</p>}
 
-        {error && <p>{error}</p>}
-
         {!loading && !error && (
-            <ExpenseList expenses={expenses} />
+            <ExpenseList 
+            expenses={expenses}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            />
         )}
         
     </div>

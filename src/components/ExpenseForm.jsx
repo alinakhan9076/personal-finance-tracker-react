@@ -1,11 +1,22 @@
 import { useState } from "react";
-import { createExpense } from "../api/api";
+import { createExpense, updateExpense } from "../api/api";
 
-function ExpenseForm() {
-    const [amount, setAmount] = useState("");
-    const [category, setCategory] = useState("");
-    const [date, setDate] = useState("");
-    const [note, setNote] = useState("");
+function ExpenseForm({
+    onExpenseCreated,
+    editingExpense,
+    onExpenseUpdated,
+    onCancelEdit,
+}) {
+    const [amount, setAmount] = useState(() =>
+        editingExpense ? String(editingExpense.amount / 100) : ""
+    );
+    const [category, setCategory] = useState(() =>
+        editingExpense?.category || ""
+    );
+    const [date, setDate] = useState(() =>
+        editingExpense?.date?.slice(0, 10) || ""
+    );
+    const [note, setNote] = useState(() => editingExpense?.note || "");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -20,19 +31,27 @@ function ExpenseForm() {
                 Number(amount) * 100
             );
 
-            await createExpense({
+            const expenseData = {
                 amount: amountInPaise,
                 category,
                 date,
                 note,
-            });
+            };
+
+            if (editingExpense) {
+                await updateExpense(editingExpense._id, expenseData);
+                onExpenseUpdated();
+            } else {
+                await createExpense(expenseData);
+                onExpenseCreated();
+            }
 
             setAmount("");
             setCategory("");
             setDate("");
             setNote("");
 
-            setSuccess("Expense added sucessfully");
+            setSuccess("Expense saved successfully");
         } catch (error) {
             setError(error.message);
         }
@@ -46,7 +65,7 @@ function ExpenseForm() {
                 <input
                 type="number"
                 step="0.01"
-                placeholder="Amount in rupess"
+                placeholder="Amount in rupees"
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)} 
                 />
@@ -65,14 +84,21 @@ function ExpenseForm() {
                 />
 
                 <input
-                type="Note"
+                type="text"
                 value={note}
                 onChange={(event) => setNote(event.target.value)} 
                 />
 
                 <button type="submit">
-                    Add Expense
+                    {editingExpense ? "Update Expense" : "Add Expense" }
                 </button>
+
+                {editingExpense && (
+                        <button type="button"
+                        onClick={onCancelEdit}>
+                            Cancel
+                        </button>
+                    )}
             </form>
 
             {error && <p>{error}</p>}
