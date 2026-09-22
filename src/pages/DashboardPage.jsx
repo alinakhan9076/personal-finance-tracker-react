@@ -8,13 +8,15 @@ function DashboardPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [editingExpense, setEditingExpense] = useState(null);
+    const [selectedMonth, setSelectedMonth] = useState("2026-09");
+    const [selectedYear, selectedMonthNumber] = selectedMonth.split("-");
 
-    const loadExpenses = async () => {
+    const loadExpenses = async (year, month) => {
         try {
             setLoading(true);
             setError("");
 
-            const data = await getExpenses();
+            const data = await getExpenses(year, month);
             setExpenses(data);
         } catch (error) {
             setError(error.message);
@@ -24,21 +26,8 @@ function DashboardPage() {
     };
 
     useEffect(() => {
-        const fetchInitialExpenses = async () => {
-            try {
-                setError("");
-
-                const data = await getExpenses();
-                setExpenses(data);
-            } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchInitialExpenses();
-}, []);
+        loadExpenses(selectedYear, selectedMonthNumber);
+}, [selectedYear, selectedMonthNumber]);
 
 const handleDelete = async (id) => {
     try {
@@ -56,6 +45,14 @@ const handleEdit = (expense) => {
 return (
     <div>
         <h1>Finance Dashboard</h1>
+
+        <label>
+            Select Month:
+            <input type="month"
+            value={selectedMonth}
+            onChange={(event) => setSelectedMonth(event.target.value)}
+            />
+        </label>
 
         <ExpenseForm 
         key={editingExpense?._id || "new-expense"}

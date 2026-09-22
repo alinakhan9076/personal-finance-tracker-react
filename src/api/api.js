@@ -36,10 +36,10 @@ export const loginUser = async (userData) => {
     return data;
 };
 
-export const getExpenses = async () => {
+export const getExpenses = async (year, month) => {
     const token = localStorage.getItem("token");
 
-    const response = await fetch(`${API_URL}/api/expenses`, {
+    const response = await fetch(`${API_URL}/api/expenses?year=${year}&month=${month}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
