@@ -36,10 +36,21 @@ export const loginUser = async (userData) => {
     return data;
 };
 
-export const getExpenses = async (year, month) => {
+export const getExpenses = async (year, month, category = "", 
+    from = "", to = "") => {
     const token = localStorage.getItem("token");
 
-    const response = await fetch(`${API_URL}/api/expenses?year=${year}&month=${month}`, {
+    let url = `${API_URL}/api/expenses?year=${year}&month=${month}`;
+
+    if (from && to) {
+        url = `${API_URL}/api/expenses?from=${from}&to=${to}`;
+    }
+
+    if (category) {
+        url += `&category=${encodeURIComponent(category)}`;
+    }
+
+    const response = await fetch(url, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

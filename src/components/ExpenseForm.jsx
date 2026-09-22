@@ -65,7 +65,7 @@ function ExpenseForm({
                 <input
                 type="number"
                 step="0.01"
-                placeholder="Amount in rupees"
+                placeholder="₹ Amount in rupees"
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)} 
                 />
