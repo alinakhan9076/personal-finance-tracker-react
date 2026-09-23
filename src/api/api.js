@@ -65,6 +65,27 @@ export const getExpenses = async (year, month, category = "",
     return data;
 };
 
+export const getCategorySummary = async (year, month) => {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`${API_URL}/api/summary/by-category?year=${year}&month=${month}`,
+    {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.message || "Failed to fetch category summary"
+        );
+    }
+
+    return data;
+}
+
 export const createExpense = async (expenseData) => {
     const token = localStorage.getItem("token");
 

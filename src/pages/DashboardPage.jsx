@@ -1,7 +1,8 @@
 import { useEffect, useState} from "react";
-import { getExpenses, deleteExpense } from "../api/api";
+import { getExpenses, deleteExpense, getCategorySummary } from "../api/api";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
+import CategoryChart from "../components/CategoryChart";
 
 function DashboardPage() {
     const [expenses, setExpenses] = useState([]);
@@ -14,6 +15,7 @@ function DashboardPage() {
     const [total, setTotal] = useState(0);
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
+    const [summary, setSummary] = useState([]);
 
     const loadExpenses = async (year, month, category, from, to) => {
         try {
@@ -35,6 +37,15 @@ function DashboardPage() {
         }
     };
 
+    const loadSummary = async (year, month) => {
+        try {
+            const data = await getCategorySummary(year, month);
+            setSummary(data);
+        } catch (error) {
+            setError(error.message)
+        }
+    };
+
     useEffect(() => {
         const fetchExpenses = async () => {
             
@@ -45,6 +56,19 @@ function DashboardPage() {
        fetchExpenses();
 }, [selectedYear, selectedMonthNumber, 
     selectedCategory, fromDate, toDate,]);
+
+    useEffect(() => {
+        const fetchSummary = async () => {
+            await loadSummary(
+                selectedYear,
+                selectedMonthNumber
+            );
+        };
+
+        fetchSummary();
+    }, [selectedYear,
+        selectedMonthNumber
+    ]);
 
 const handleDelete = async (id) => {
     try {
@@ -118,6 +142,8 @@ return (
         <p>
             Total Spent: ₹{(total / 100).toFixed(2)}
         </p>
+
+        <CategoryChart  summary={summary} />
 
         <ExpenseForm 
         key={editingExpense?._id || "new-expense"}
