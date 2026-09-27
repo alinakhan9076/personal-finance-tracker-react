@@ -3,12 +3,16 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import HomePage from "./pages/HomePage";
 
 
 function App() {
   return (
     <BrowserRouter>
     <Routes>
+      <Route path="/"
+      element={<HomePage />} />
+      
       <Route path="/register"
       element={<RegisterPage />} />
 
