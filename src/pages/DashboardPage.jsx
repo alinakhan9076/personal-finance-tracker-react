@@ -1,10 +1,13 @@
 import { useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 import { getExpenses, deleteExpense, getCategorySummary, getBudget, updateBudget,} from "../api/api";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
 import CategoryChart from "../components/CategoryChart";
 
 function DashboardPage() {
+    const navigate = useNavigate();
+
     const [expenses, setExpenses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -71,6 +74,26 @@ function DashboardPage() {
         }
     };
 
+    const refreshDashboard = async () => {
+        await loadExpenses(
+            selectedYear,
+            selectedMonthNumber,
+            selectedCategory,
+            fromDate,
+            toDate
+        );
+
+        await loadSummary(
+            selectedYear,
+            selectedMonthNumber
+        );
+
+        await loadBudget(
+            selectedYear,
+            selectedMonthNumber
+        );
+    };
+
     useEffect(() => {
         const fetchExpenses = async () => {
             
@@ -109,16 +132,11 @@ function DashboardPage() {
         selectedMonthNumber
     ]);
 
+
 const handleDelete = async (id) => {
     try {
         await deleteExpense(id);
-        await loadExpenses(
-            selectedYear,
-            selectedMonthNumber,
-            selectedCategory,
-            fromDate,
-            toDate
-        );
+        await refreshDashboard();
     } catch (error) {
         setError(error.message);
     }
@@ -126,6 +144,11 @@ const handleDelete = async (id) => {
 
 const handleEdit = (expense) => {
     setEditingExpense(expense);
+}
+
+const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
 }
 
 const handleSaveBudget = async () => {
@@ -163,6 +186,11 @@ const isOverBudget = remainingBudget < 0;
 return (
     <div>
         <h1>Finance Dashboard</h1>
+
+        <button type="button"
+        onClick={handleLogout}> 
+        Logout
+        </button>
 
         <label>
             Select Month:
@@ -261,24 +289,12 @@ return (
 
         <ExpenseForm 
         key={editingExpense?._id || "new-expense"}
-        onExpenseCreated={() => loadExpenses(
-            selectedYear,
-            selectedMonthNumber,
-            selectedCategory,
-            fromDate,
-            toDate
-        )}
+        onExpenseCreated={refreshDashboard}
         editingExpense={editingExpense}
-        onExpenseUpdated={() => {
+        onExpenseUpdated={async () => {
             setEditingExpense(null);
-            loadExpenses(
-            selectedYear,
-            selectedMonthNumber,
-            selectedCategory,
-            fromDate,
-            toDate
-            );
-        }}
+            await refreshDashboard();
+            }}
         onCancelEdit={() => 
             setEditingExpense(null)
         }
