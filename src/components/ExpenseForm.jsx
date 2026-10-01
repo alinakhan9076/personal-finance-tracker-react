@@ -75,7 +75,6 @@ function ExpenseForm({
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2"
             >
 
-                {/* Amount */}
                 <div>
                     <label className="mb-2 block text-sm font-semibold text-stone-700">
                         Amount
@@ -91,7 +90,6 @@ function ExpenseForm({
                     />
                 </div>
 
-                {/* Category */}
                 <div>
                     <label className="mb-2 block text-sm font-semibold text-stone-700">
                         Category
@@ -106,7 +104,6 @@ function ExpenseForm({
                     />
                 </div>
 
-                {/* Date */}
                 <div>
                     <label className="mb-2 block text-sm font-semibold text-stone-700">
                         Date
@@ -120,7 +117,6 @@ function ExpenseForm({
                     />
                 </div>
 
-                {/* Note */}
                 <div>
                     <label className="mb-2 block text-sm font-semibold text-stone-700">
                         Note
@@ -135,7 +131,6 @@ function ExpenseForm({
                     />
                 </div>
 
-                {/* Buttons */}
                 <div className="flex flex-col gap-3 pt-1 sm:col-span-2 sm:flex-row">
 
                     <button
@@ -157,14 +152,12 @@ function ExpenseForm({
                 </div>
             </form>
 
-            {/* Error */}
             {error && (
                 <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                     {error}
                 </p>
             )}
 
-            {/* Success */}
             {success && (
                 <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
                     {success}

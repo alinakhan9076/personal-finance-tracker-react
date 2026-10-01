@@ -13,6 +13,11 @@ function RegisterPage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if (password.length < 6) {
+            setError("Password must be al least 6 characters long");
+            return;
+        }
+
         try {
             setError("");
 
@@ -98,6 +103,9 @@ function RegisterPage() {
                 py-3 text-stone-900 outline-none transition focus:border-emerald-700 
                 focus:ring-2 focus:ring-emerald-200"
                 />
+                <p className="mt-1 text-xs text-stone-500">
+                    Password must be at least 6 characters.
+                </p>
                 </div>
                 
                 <button type="submit"

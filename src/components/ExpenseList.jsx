@@ -8,7 +8,6 @@ function ExpenseList({ expenses, onEdit, onDelete }) {
                     className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-6"
                 >
 
-                    {/* Expense Information */}
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
                         <div>
@@ -53,7 +52,6 @@ function ExpenseList({ expenses, onEdit, onDelete }) {
 
                     </div>
 
-                    {/* Action Buttons */}
                     <div className="mt-5 flex flex-col gap-3 border-t border-stone-100 pt-4 sm:flex-row">
 
                         <button

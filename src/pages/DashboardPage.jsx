@@ -189,7 +189,6 @@ const isOverBudget = remainingBudget < 0;
 
             <div className="mx-auto max-w-7xl">
 
-                {/* Header */}
                 <header className="mb-6 rounded-3xl bg-emerald-950 px-5 py-5 text-white shadow-lg sm:px-7">
 
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -208,7 +207,6 @@ const isOverBudget = remainingBudget < 0;
                             </p>
                         </div>
 
-                        {/* Logout - right side */}
                         <button
                             onClick={handleLogout}
                             className="self-start rounded-xl border border-white/70 bg-white px-5 py-2.5 font-semibold text-emerald-950 shadow-sm transition-all duration-200 hover:bg-emerald-900 hover:text-white hover:border-emerald-900 hover:shadow-md sm:self-auto"
@@ -220,14 +218,12 @@ const isOverBudget = remainingBudget < 0;
 
                 </header>
 
-                {/* Error */}
                 {error && (
                     <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                         {error}
                     </div>
                 )}
 
-                {/* Filters */}
                 <section className="mb-6 rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
 
                     <div className="mb-5">
@@ -240,7 +236,7 @@ const isOverBudget = remainingBudget < 0;
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
                         <div>
                             <label className="mb-2 block text-sm font-semibold text-stone-700">
@@ -312,7 +308,6 @@ const isOverBudget = remainingBudget < 0;
 
                 </section>
 
-                {/* Summary Cards */}
                 <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
                     <div className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
@@ -359,7 +354,6 @@ const isOverBudget = remainingBudget < 0;
 
                 </section>
 
-                {/* Budget */}
                 <section className="mb-6 rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
 
                     <div className="mb-5">
@@ -406,7 +400,6 @@ const isOverBudget = remainingBudget < 0;
 
                 </section>
 
-                {/* Chart */}
                 <section className="mb-6 rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
 
                     <div className="mb-4">
@@ -425,7 +418,7 @@ const isOverBudget = remainingBudget < 0;
 
                 </section>
 
-                {/* Expense Form */}
+                
                 <section className="mb-6 rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
 
                     <div className="mb-5">
@@ -447,14 +440,11 @@ const isOverBudget = remainingBudget < 0;
                             editingExpense?._id ||
                             "new-expense"
                         }
-                        onExpenseCreated={async () => {
-                            setEditingExpense(null);
-                            await refreshDashboard();
-                        }}
+                        onExpenseCreated={refreshDashboard}
                         editingExpense={editingExpense}
-                        onExpenseUpdated={async () => {
+                        onExpenseUpdated={() => {
                             setEditingExpense(null);
-                            await refreshDashboard();
+                            refreshDashboard();
                         }}
                         onCancelEdit={() =>
                             setEditingExpense(null)
@@ -463,7 +453,6 @@ const isOverBudget = remainingBudget < 0;
 
                 </section>
 
-                {/* Expenses List */}
                 <section className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
 
                     <div className="mb-5">
