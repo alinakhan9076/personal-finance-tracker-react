@@ -1,16 +1,82 @@
-# React + Vite
+# Personal Finance Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal Finance Tracker is a full-stack web application that allows users to manage their personal expenses and monthly budgets in one place. Users can securely register and log in, manage their own expenses, filter their spending, view category-wise charts, and track their monthly budget.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- User registration and login
+- JWT-based authentication
+- Protected routes and APIs
+- Add, edit, and delete expenses
+- User-specific expense data
+- Monthly expense tracking
+- Category and date-range filters
+- Monthly spending total
+- Category-wise spending chart
+- Monthly budget management
+- Remaining budget calculation
+- Over-budget status
+- Loading and error handling
+- Responsive design
+- Backend health check
 
-## React Compiler
+## Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Frontend
 
-## Expanding the ESLint configuration
+- React
+- Vite
+- JavaScript
+- React Router DOM
+- Tailwind CSS
+- Recharts
+- Fetch API
+- LocalStorage
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Backend
+
+- Node.js
+- Express.js
+- REST API
+- Mongoose
+- JWT
+- Authentication Middleware
+- CORS
+- dotenv
+
+### Database
+
+- MongoDB Atlas
+- Mongoose
+
+### Authentication
+
+The application uses JWT authentication. After login, the JWT token is stored in LocalStorage and is sent with protected API requests. Authentication middleware verifies the token and identifies the logged-in user.
+
+Each user's expenses are stored with their user ID, so users can access only their own expense data.
+
+## Live Demo
+
+### Frontend
+Live Frontend URL=https://personal-finance-tracker-react-theta.vercel.app/
+
+### Backend API
+Live Backend API URL=https://personal-finance-tracker-api-yryz.onrender.com
+
+## Main API Routes
+
+```text
+POST   /api/auth/register
+POST   /api/auth/login
+
+GET    /api/expenses
+POST   /api/expenses
+PUT    /api/expenses/:id
+DELETE /api/expenses/:id
+
+GET    /api/summary/by-category
+
+GET    /api/budget
+PUT    /api/budget
+
+GET    /api/health
