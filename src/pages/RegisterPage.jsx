@@ -14,20 +14,22 @@ function RegisterPage() {
         event.preventDefault();
 
         if (password.length < 6) {
-            setError("Password must be al least 6 characters long");
+            setError("Password must be at least 6 characters long");
             return;
         }
 
         try {
             setError("");
 
-            await registerUser({
+           const data = await registerUser({
                 name,
                 email,
                 password,
             });
 
-            navigate("/login");
+            localStorage.setItem("token", data.token);
+
+            navigate("/dashboard");
         } catch (error) {
             setError(error.message);
         }
